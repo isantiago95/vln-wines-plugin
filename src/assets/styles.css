@@ -1,0 +1,12 @@
+.stack-icon {
+  height: 2.5em;
+  margin: 0 0.6em;
+}
+.actions {
+  width: auto;
+  height: 1.4em;
+  margin: 0 0.4em;
+}
+.card {
+  box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.41);
+}

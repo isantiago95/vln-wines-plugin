@@ -9,11 +9,11 @@ function ms_devs_createdatabase()
   $ms_stack = $wpdb->prefix . 'ms_stack';
   $charset_collate = $wpdb->get_charset_collate();
   $sql2 = "CREATE TABLE IF NOT EXISTS $ms_stack (
-  `stack_id` INT (3) NOT NULL AUTO_INCREMENT,
-  `stack_active` BOOLEAN DEFAULT TRUE,
-  `stack_name` VARCHAR(100) DEFAULT NULL,
-  `stack_url` VARCHAR(800) DEFAULT NULL,
-  PRIMARY KEY(stack_id)) $charset_collate;";
+  `id` INT (3) NOT NULL AUTO_INCREMENT,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `image_url` VARCHAR(800) DEFAULT NULL,
+  PRIMARY KEY(id)) $charset_collate;";
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta($sql2);
 
@@ -21,7 +21,7 @@ function ms_devs_createdatabase()
 
   /* agrega las categorias al activar el plugin */
   $wpdb->query("INSERT IGNORE INTO $ms_stack
-  (stack_id,stack_active,stack_name, stack_url)
+  (id,is_active,name, image_url)
   VALUES
   ('1',true,'React Js', '$placeholder/react-logo.svg'),
   ('2',true,'Vue Js', '$placeholder/vue-logo.svg'),
@@ -56,17 +56,17 @@ function ms_devs_createdatabase()
   $ms_devs = $wpdb->prefix . 'ms_devs';
   $charset_collate = $wpdb->get_charset_collate();
   $sql = "CREATE TABLE IF NOT EXISTS $ms_devs (
-  `dev_id` INT (3) NOT NULL AUTO_INCREMENT,
+  `id` INT (3) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) DEFAULT NULL,
   `image_url` VARCHAR(500) DEFAULT NULL,
   `description` VARCHAR(1500) DEFAULT NULL,
   `role` VARCHAR(100) DEFAULT NULL,
   `country` VARCHAR(50) DEFAULT NULL,
   `years_experience` VARCHAR(2) DEFAULT NULL,
-  `stack_ids` VARCHAR(500) DEFAULT NULL,
+  `stack` VARCHAR(500) DEFAULT NULL,
   `city` VARCHAR(50) DEFAULT NULL,
   `history` VARCHAR(10000) DEFAULT NULL,
-  PRIMARY KEY(dev_id));
+  PRIMARY KEY(id));
 ) $charset_collate;";
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta($sql);

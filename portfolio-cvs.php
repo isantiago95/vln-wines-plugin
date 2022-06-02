@@ -25,14 +25,17 @@ add_action( 'admin_enqueue_scripts', 'ms_devs_react_scripts' );
 function ms_devs_react_scripts() {
     wp_enqueue_script( 'ms-devs-plugin', MS_DEVS_URL . 'dist/bundle.js', [ 'jquery', 'wp-element' ], wp_rand(), true );
     wp_localize_script( 'ms-devs-plugin', 'appLocalizer', [
-        'apiUrl' => home_url( '/ms-devs' ),
+        'apiUrl' => home_url( '/wp-json' ),
         'nonce' => wp_create_nonce( 'wp_rest' ),
         ] );
 }
 
+
+
 /* require menu */
 require_once MS_DEVS_PATH.'inc/menu.php';
-
 /* create custom database */
 require_once plugin_dir_path(__FILE__).'inc/database.php';
 register_activation_hook( __FILE__, 'ms_devs_createdatabase' );
+require_once MS_DEVS_PATH.'inc/queries.php';
+require_once MS_DEVS_PATH.'inc/endpoints.php';
