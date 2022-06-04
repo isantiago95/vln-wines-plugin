@@ -66,6 +66,7 @@ function ms_devs_createdatabase()
   `stack` VARCHAR(500) DEFAULT NULL,
   `city` VARCHAR(50) DEFAULT NULL,
   `history` VARCHAR(10000) DEFAULT NULL,
+  `preference` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY(id));
 ) $charset_collate;";
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
