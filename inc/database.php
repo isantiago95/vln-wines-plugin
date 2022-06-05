@@ -57,20 +57,37 @@ function ms_devs_createdatabase()
   $charset_collate = $wpdb->get_charset_collate();
   $sql = "CREATE TABLE IF NOT EXISTS $ms_devs (
   `id` INT (3) NOT NULL AUTO_INCREMENT,
+  `is_active` BOOLEAN DEFAULT TRUE,
   `name` VARCHAR(50) DEFAULT NULL,
   `image_url` VARCHAR(500) DEFAULT NULL,
   `description` VARCHAR(1500) DEFAULT NULL,
   `role` VARCHAR(100) DEFAULT NULL,
   `country` VARCHAR(50) DEFAULT NULL,
-  `years_experience` VARCHAR(2) DEFAULT NULL,
-  `stack` VARCHAR(500) DEFAULT NULL,
+  `years_experience` INT (2) DEFAULT NULL,
+  -- `stack` VARCHAR(500) DEFAULT NULL,
   `city` VARCHAR(50) DEFAULT NULL,
-  `history` VARCHAR(10000) DEFAULT NULL,
+  `history` TEXT DEFAULT NULL,
   `preference` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY(id));
-) $charset_collate;";
+  ) $charset_collate;";
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta($sql);
+    
+  
+  /* table to save stack categories */
+  $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
+  $charset_collate = $wpdb->get_charset_collate();
+  $related = "CREATE TABLE IF NOT EXISTS $ms_devs_stack (
+  `id` INT (3) NOT NULL AUTO_INCREMENT,
+  `id_dev` INT (3) NOT NULL,
+  `id_stack` INT (3) NOT NULL,
+  `years` INT (2) NOT NULL,
+  PRIMARY KEY(id), 
+  FOREIGN KEY (id_dev) REFERENCES $ms_devs(id),
+  FOREIGN KEY (id_stack) REFERENCES $ms_stack(id)
+  ) $charset_collate;";
+  require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+  dbDelta($related);
 
   $success = empty($wpdb->last_error);
   return $success;

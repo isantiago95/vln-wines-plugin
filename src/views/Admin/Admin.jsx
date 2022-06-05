@@ -7,6 +7,7 @@ import ItemCard from '../../components/ItemCard.jsx';
 const Admin = () => {
   const [devs, setDevs] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
+  const [list, setList] = React.useState([]);
   const isUser = true;
 
   React.useEffect(() => {
@@ -14,8 +15,9 @@ const Admin = () => {
   }, []);
 
   const getUsers = async () => {
-    const { users } = await retrieveData(true);
+    const { users, stack } = await retrieveData(true);
     setDevs(users);
+    setList(stack);
   };
 
   React.useEffect(() => {
@@ -39,7 +41,7 @@ const Admin = () => {
           </ListGroup>
         </Col>
         <Col>
-          <ItemCard item={selected} isUser={isUser} />
+          <ItemCard item={selected} isUser={isUser} list={list} />
         </Col>
       </Row>
     </Container>

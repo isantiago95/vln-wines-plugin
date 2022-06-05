@@ -30,4 +30,6 @@
 .dev-img {
   height: 12em;
   width: auto;
+  margin: auto;
+  display: block;
 }
