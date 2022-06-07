@@ -13,10 +13,26 @@ function getStackCategories(){
 
 function getDevelopers(){
     global $wpdb;
+    // get all devs
     $ms_devs = $wpdb->prefix.'ms_devs';
-    $query = "SELECT * FROM $ms_devs";
-    $query_result = $wpdb->get_results($query, ARRAY_A);
-    return rest_ensure_response($query_result);
+    $sql1 = "SELECT * FROM $ms_devs";
+    $sql1_result = $wpdb->get_results($sql1, ARRAY_A);
+    // get all relations
+    $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
+    $sql2 = "SELECT * FROM $ms_devs_stack";
+    $sql2_result = $wpdb->get_results($sql2, ARRAY_A);
+
+    $group = [];
+    foreach ($sql2_result as $obj) {
+        $group[$obj['id_dev']][] = $obj;
+    }
+
+    $result = (object) [
+        'devs' => $sql1_result,
+        'stack' => $group,
+    ];
+
+    return rest_ensure_response($result);
 }
 
 function msCreateUser($req){
@@ -69,37 +85,29 @@ function msCreateUser($req){
 
 function msUpdateUser($req){
     global $wpdb;
-    $body = $req->get_body();
-    var_dump($body);
 
     $id = sanitize_text_field($req['id']);
-    $name = sanitize_text_field($body['name']);
-    $image_url = sanitize_text_field($body['image_url']);
-    $description = sanitize_text_field($body['description']);
-    $role = sanitize_text_field($body['role']);
-    $country = sanitize_text_field($body['country']);
-    $years_experience = sanitize_text_field($body['years_experience']);
-    $stack = json_decode($body['stack']); // will be an array
-    $city = sanitize_text_field($body['city']);
-    $history = sanitize_text_field($body['history']);
-    $preference = sanitize_text_field($body['preference']);
+    $name = sanitize_text_field($req['name']);
+    $image_url = sanitize_text_field($req['image_url']);
+    $description = sanitize_text_field($req['description']);
+    $role = sanitize_text_field($req['role']);
+    $country = sanitize_text_field($req['country']);
+    $years_experience = sanitize_text_field($req['years_experience']);
+    $stack = json_decode($req['stack']); // will be an array
+    $city = sanitize_text_field($req['city']);
+    $history = sanitize_text_field($req['history']);
+    $preference = sanitize_text_field($req['preference']);
 
+    $ms_devs_stack = $wpdb->prefix.'ms_devs_stack';
+    $wpdb->delete($ms_devs_stack,['id_dev'=>$id]);
 
-    $values = (object) [
-        'id'=>$id,
-        'name'=>$name,
-        'image_url'=>$image_url,
-        'description'=>$description,
-        'role'=>$role,
-        'country'=>$country,
-        'years_experience'=>$years_experience,
-        'stack'=>$stack,
-        'city'=>$city,
-        'history'=>$history,
-        'preference'=>$preference,
-    ];
-
-    var_dump($values);
+    foreach ($stack as $key => $value) {
+        $wpdb->insert($ms_devs_stack, [
+            'id_dev'=>$id,
+            'id_stack'=>$value->stack,
+            'years'=>$value->years
+        ]);
+    }
 
     $ms_devs = $wpdb->prefix.'ms_devs';
     $data = [
@@ -114,21 +122,29 @@ function msUpdateUser($req){
         'preference' => $preference
     ];
     $query_response = $wpdb->update($ms_devs,$data, ['id'=>$id]);
-    
-    $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
 
-
-    foreach ($stack as $key => $value) {
-        $wpdb->update($ms_devs_stack, [
-            'id_stack'=>$value->stack,
-            'years'=>$value->years
-        ],
-        ['id_dev'=>$id]);
-    }
-    
     $result = (object) [
         "query_response" => $query_response,
     ];
 
+    return rest_ensure_response($result);
+}
+
+function msDeleteUser($req){
+    global $wpdb;
+    
+    $id = intval(sanitize_text_field($req['id']));
+    
+    // $wpdb->show_errors();
+    $ms_devs = $wpdb->prefix.'ms_devs';
+    $ms_devs_stack = $wpdb->prefix.'ms_devs_stack';
+
+    $delete_relation = $wpdb->delete($ms_devs_stack,['id_dev'=>$id]);
+    $delete_dev = $wpdb->delete($ms_devs,['id'=>$id]);
+    
+    $result = (object) [
+        "query_response" => $delete_dev,
+        "delete_relation" => $delete_relation,
+    ];
     return rest_ensure_response($result);
 }

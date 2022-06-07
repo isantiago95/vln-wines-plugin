@@ -37,6 +37,11 @@ class MS_Devs_Endpoints {
             'callback' => [$this,'update_user'],
             'permission_callback' => [$this, 'update_user_permission']
         ]);
+        register_rest_route('msapi/v1', '/users', [
+            'methods' => 'DELETE',
+            'callback' => [$this,'delete_user'],
+            'permission_callback' => [$this, 'delete_user_permission']
+        ]);
     }
 
     // functions to call on endpoints
@@ -64,6 +69,12 @@ class MS_Devs_Endpoints {
         return msUpdateUser($req);
     }
     public function update_user_permission(){
+        return ms_permissions(false);
+    }
+    public function delete_user($req){
+        return msDeleteUser($req);
+    }
+    public function delete_user_permission(){
         return ms_permissions(false);
     }
 
