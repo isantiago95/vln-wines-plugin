@@ -19,8 +19,7 @@ export async function retrieveData(callUsers = false) {
   let result = {};
   if (callUsers) {
     const { data, status } = await get('/users');
-    console.log(data);
-    if (status === 200) result = { ...result, users: data };
+    if (status === 200) result = { ...result, users: buildDevsArray(data) };
   }
   const stackList = getStackList();
   if (!stackList) {
@@ -37,3 +36,11 @@ export async function retrieveData(callUsers = false) {
 }
 
 export const getStackList = () => JSON.parse(localStorage.getItem('stackList'));
+
+export const buildDevsArray = ({ devs, stack }) =>
+  devs.map(dev => {
+    return {
+      ...dev,
+      stack: stack[dev.id],
+    };
+  });

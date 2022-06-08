@@ -16,19 +16,20 @@ function getDevelopers(){
     // get all devs
     $ms_devs = $wpdb->prefix.'ms_devs';
     $sql1 = "SELECT * FROM $ms_devs";
-    $sql1_result = $wpdb->get_results($sql1, ARRAY_A);
+    $devs_query = $wpdb->get_results($sql1, ARRAY_A);
     // get all relations
     $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
     $sql2 = "SELECT * FROM $ms_devs_stack";
-    $sql2_result = $wpdb->get_results($sql2, ARRAY_A);
+    $stack_query = $wpdb->get_results($sql2, ARRAY_A);
 
+    // group stack results into an array according the id_dev of each
     $group = [];
-    foreach ($sql2_result as $obj) {
+    foreach ($stack_query as $obj) {
         $group[$obj['id_dev']][] = $obj;
     }
 
     $result = (object) [
-        'devs' => $sql1_result,
+        'devs' => $devs_query,
         'stack' => $group,
     ];
 
@@ -44,7 +45,7 @@ function msCreateUser($req){
     $role = sanitize_text_field($req['role']);
     $country = sanitize_text_field($req['country']);
     $years_experience = sanitize_text_field($req['years_experience']);
-    $stack = json_decode($req['stack']); // will be an array
+    $stack = json_decode($req['id_stack']); // will be an array
     $city = sanitize_text_field($req['city']);
     $history = sanitize_text_field($req['history']);
     $preference = sanitize_text_field($req['preference']);
@@ -70,7 +71,7 @@ function msCreateUser($req){
     foreach ($stack as $key => $value) {
         $wpdb->insert($ms_devs_stack, [
             'id_dev'=>$id,
-            'id_stack'=>$value->stack,
+            'id_stack'=>$value->id_stack,
             'years'=>$value->years
         ]);
     }
@@ -93,7 +94,7 @@ function msUpdateUser($req){
     $role = sanitize_text_field($req['role']);
     $country = sanitize_text_field($req['country']);
     $years_experience = sanitize_text_field($req['years_experience']);
-    $stack = json_decode($req['stack']); // will be an array
+    $stack = json_decode($req['id_stack']); // will be an array
     $city = sanitize_text_field($req['city']);
     $history = sanitize_text_field($req['history']);
     $preference = sanitize_text_field($req['preference']);
@@ -104,7 +105,7 @@ function msUpdateUser($req){
     foreach ($stack as $key => $value) {
         $wpdb->insert($ms_devs_stack, [
             'id_dev'=>$id,
-            'id_stack'=>$value->stack,
+            'id_stack'=>$value->id_stack,
             'years'=>$value->years
         ]);
     }

@@ -15,14 +15,14 @@ const Admin = () => {
   }, []);
 
   const getUsers = async () => {
-    const { users, stack } = await retrieveData(true);
+    const { users, stack } = await retrieveData(isUser);
     setDevs(users);
     setList(stack);
   };
 
   React.useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+    if (devs.length > 0) console.log(devs);
+  }, [devs]);
 
   return (
     <Container>

@@ -6,7 +6,6 @@ import {
   CardBody,
   CardTitle,
   CardImg,
-  CardText,
   Button,
   Form,
   FormGroup,
@@ -18,25 +17,32 @@ import { checkIfImageExists } from '../utils/helpers';
 import logoIcon from '../assets/images/logo-marscript-oficial.png';
 import userIcon from '../assets/images/user-icon.png';
 
+const roles = ['Front-End', 'Back-End', 'Mobile', 'Full-Stack'];
+
 const StackCard = ({ item, isUser = false, list }) => {
   const [image, setImage] = React.useState(isUser ? userIcon : logoIcon);
   const [user, setUser] = React.useState({
-    name: '',
-    role: '',
-    years_experience: '',
-    country: '',
     city: '',
-    stack: [],
+    country: '',
     description: '',
-    exampleFile: '',
+    history: '',
+    id: '',
+    image_url: '',
+    is_active: true,
+    name: '',
     preference: {},
+    role: '',
+    stack: [],
+    years_experience: '',
   });
 
   React.useEffect(() => {
-    if (item)
+    if (item) {
       checkIfImageExists(item.image_url, exists => {
         if (exists) setImage(item.image_url);
       });
+      setUser(item);
+    }
   }, [item]);
 
   function handleSubmit(e) {
@@ -44,18 +50,26 @@ const StackCard = ({ item, isUser = false, list }) => {
     console.log(user);
   }
 
-  function handleChange(target) {
-    const { name, value } = target;
-    console.log({ name, value });
+  function handleChange(e) {
+    const { name, value } = e.target;
     if (name === 'stack') addMultipleSelectValues(value);
-    else if (name === 'front' || name === 'back' || name === 'mobile')
-      handlePreference(name, value);
+    else if (roles.includes(name)) handlePreference(name);
     else setUser({ ...user, [name]: value });
   }
 
-  const addMultipleSelectValues = value => setUser({ ...user, stack: [...user.stack, value] });
+  const addMultipleSelectValues = value => {
+    if (user.stack.find(item => item.id_stack === value)) {
+      setUser({ ...user, stack: user.stack.filter(item => item.id_stack !== value) });
+    } else {
+      setUser({ ...user, stack: [...user.stack, { id_stack: value, years: '1' }] });
+    }
+  };
 
-  const handlePreference = (name, value) => setUser({ ...user, preference: { [name]: value } });
+  React.useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  const handlePreference = name => setUser({ ...user, preference: name });
 
   return (
     <Card>
@@ -67,12 +81,13 @@ const StackCard = ({ item, isUser = false, list }) => {
           top
         />
         {item && <CardTitle tag='h5'>{item.name}</CardTitle>}
+        {isUser && !item && <CardTitle tag='h5'>Create new developer</CardTitle>}
         {isUser && (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
               <Label for='name'>Name</Label>
               <Input
-                onChange={e => handleChange(e.target)}
+                onChange={handleChange}
                 value={user.name}
                 id='name'
                 name='name'
@@ -85,20 +100,23 @@ const StackCard = ({ item, isUser = false, list }) => {
                 <FormGroup>
                   <Label for='role'>Role</Label>
                   <Input
-                    onChange={e => handleChange(e.target)}
+                    onChange={handleChange}
                     value={user.role}
                     id='role'
                     name='role'
-                    placeholder='Ex. React Developer Engineer'
-                    type='text'
-                  />
+                    type='select'>
+                    <option hidden>Select a Role</option>
+                    {roles.map(role => (
+                      <option value={role}>{role}</option>
+                    ))}
+                  </Input>
                 </FormGroup>
               </Col>
               <Col md='4'>
                 <FormGroup>
                   <Label for='years_experience'>Experience</Label>
                   <Input
-                    onChange={e => handleChange(e.target)}
+                    onChange={handleChange}
                     value={user.years_experience}
                     id='years_experience'
                     name='years_experience'
@@ -113,13 +131,13 @@ const StackCard = ({ item, isUser = false, list }) => {
                 <FormGroup>
                   <Label for='country'>Country</Label>
                   <Input
-                    onChange={e => handleChange(e.target)}
+                    onChange={handleChange}
                     value={user.country}
                     id='country'
                     name='country'
                     type='select'>
                     <option hidden>Select a country </option>
-                    <option value='México'>México</option>
+                    <option value='Mexico'>México</option>
                     <option value='USA'>USA</option>
                   </Input>
                 </FormGroup>
@@ -128,7 +146,7 @@ const StackCard = ({ item, isUser = false, list }) => {
                 <FormGroup>
                   <Label for='city'>City</Label>
                   <Input
-                    onChange={e => handleChange(e.target)}
+                    onChange={handleChange}
                     value={user.city}
                     id='city'
                     name='city'
@@ -141,8 +159,9 @@ const StackCard = ({ item, isUser = false, list }) => {
             <FormGroup>
               <Label for='stack'>Stack</Label>
               <Input
-                onChange={e => handleChange(e.target)}
-                value={user.stack}
+                style={{ height: '12em' }}
+                onChange={handleChange}
+                value={user.stack.map(({ id_stack }) => id_stack)}
                 id='stack'
                 multiple
                 name='stack'
@@ -155,7 +174,7 @@ const StackCard = ({ item, isUser = false, list }) => {
             <FormGroup>
               <Label for='description'>Self Description</Label>
               <Input
-                onChange={e => handleChange(e.target)}
+                onChange={handleChange}
                 value={user.description}
                 id='description'
                 name='description'
@@ -165,7 +184,7 @@ const StackCard = ({ item, isUser = false, list }) => {
             <FormGroup>
               <Label for='exampleFile'>File</Label>
               <Input
-                onChange={e => handleChange(e.target)}
+                onChange={handleChange}
                 value={user.exampleFile}
                 id='exampleFile'
                 name='file'
@@ -178,35 +197,21 @@ const StackCard = ({ item, isUser = false, list }) => {
             </FormGroup>
             <FormGroup tag='fieldset'>
               <legend>Stack Preference</legend>
-              <FormGroup check>
-                <Input
-                  onChange={e => handleChange(e.target)}
-                  checked={user.preference.front ? true : false}
-                  name='front'
-                  type='radio'
-                />{' '}
-                <Label check>Front-End</Label>
-              </FormGroup>
-              <FormGroup check>
-                <Input
-                  onChange={e => handleChange(e.target)}
-                  checked={user.preference.back ? true : false}
-                  name='back'
-                  type='radio'
-                />{' '}
-                <Label check>Back-End</Label>
-              </FormGroup>
-              <FormGroup check>
-                <Input
-                  onChange={e => handleChange(e.target)}
-                  checked={user.preference.mobile ? true : false}
-                  name='mobile'
-                  type='radio'
-                />{' '}
-                <Label check>Mobile</Label>
-              </FormGroup>
+              {roles.map(role => (
+                <FormGroup>
+                  <Input
+                    onChange={handleChange}
+                    checked={user.preference === role ? true : false}
+                    name={role}
+                    type='radio'
+                  />
+                  <Label check>{role}</Label>
+                </FormGroup>
+              ))}
             </FormGroup>
-            <Button>Submit</Button>
+            <Button color={item ? 'success' : 'primary'} type='submit'>
+              {item ? 'Edit' : 'Create'}
+            </Button>
           </Form>
         )}
       </CardBody>

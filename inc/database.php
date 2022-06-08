@@ -64,7 +64,6 @@ function ms_devs_createdatabase()
   `role` VARCHAR(100) DEFAULT NULL,
   `country` VARCHAR(50) DEFAULT NULL,
   `years_experience` INT (2) DEFAULT NULL,
-  -- `stack` VARCHAR(500) DEFAULT NULL,
   `city` VARCHAR(50) DEFAULT NULL,
   `history` TEXT DEFAULT NULL,
   `preference` VARCHAR(50) DEFAULT NULL,
