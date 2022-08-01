@@ -15,6 +15,8 @@ export function checkIfImageExists(url, callback) {
   }
 }
 
+export const isOdd = num => (num % 2 === 0 ? true : false);
+
 export function isEmptyObject(obj) {
   return JSON.stringify(obj) === '{}';
 }
@@ -27,10 +29,8 @@ export const isEmptyArray = array => {
 export const getWines = async () => {
   try {
     const { data } = await get('/wines');
-    if (!isEmptyArray(data)) {
-      localStorage.setItem('vln-wines', JSON.stringify(data));
-      return data;
-    } else return [];
+    if (!isEmptyArray(data)) return data;
+    else return [];
   } catch (error) {}
 };
 

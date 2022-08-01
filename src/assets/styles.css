@@ -2,3 +2,43 @@
   max-width: 100%;
   margin: 0;
 }
+
+.wine-row h2 {
+  text-transform: uppercase;
+}
+
+.wine-row .descriptive-table tbody {
+  text-align-last: start;
+}
+
+.wine-row .descriptive-table th {
+  border-right: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.wine-row .descriptive-table img {
+  width: 100px;
+}
+
+.wine-row .buttons-group {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.animate.pop {
+  animation: moveToRight 1.5s ease-in-out;
+}
+
+@keyframes animate-pop {
+  0% {
+    opacity: 0;
+    transform: translateX(0px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(200px);
+  }
+}
