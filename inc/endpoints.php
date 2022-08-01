@@ -50,19 +50,19 @@ class VLN_wines_Endpoints {
         return createWine($req);
     }
     public function create_wine_permission(){
-        return vln_permissions(false);
+        return vln_permissions(true);
     }
     public function update_wine($req){
         return updateWine($req);
     }
     public function update_wine_permission(){
-        return vln_permissions(false);
+        return vln_permissions(true);
     }
     public function delete_wine($req){
         return deleteWine($req);
     }
     public function delete_wine_permission(){
-        return vln_permissions(false);
+        return vln_permissions(true);
     }
 
 }

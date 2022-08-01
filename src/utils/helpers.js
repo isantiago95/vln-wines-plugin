@@ -54,7 +54,7 @@ export const dispatchWine = async (type, payload) => {
       default:
         break;
     }
-    console.log(res);
+    // console.log(res);
     if (res.data.query_response === 'success') {
       if (type === 'add') alert('Wine added successfully');
       else if (type === 'update') alert('Wine updated successfully');
@@ -76,16 +76,8 @@ export const dispatchWine = async (type, payload) => {
 // export const updateData = async wines => {
 //   try {
 //     wines.forEach(async w => {
-//       const updated = prices.find(p => p.name === w.name);
-//       const data = {
-//         ...w,
-//         ...updated,
-//         id: null,
-//       };
-//       // console.log(data);
 //       const res = await patch(`/wines/${w.id}`, {
 //         ...w,
-//         ...updated,
 //         id: null,
 //       });
 //       console.log(res);

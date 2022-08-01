@@ -7,7 +7,7 @@ function vln_wines_custom_admin_menu(){
         'manage_options',
         'vln-wines-menu',
         'devs_custom_submenu_template_callback',
-        VLN_URL . 'assets/code.png'
+        VLN_URL . 'assets/vln-icon.png'
     );
     add_submenu_page(
         'vln-wines-menu',

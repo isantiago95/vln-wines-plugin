@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
-import { getWines, isEmptyArray, dispatchWine, updateData } from '../../utils/helpers';
+import { getWines, isEmptyArray, dispatchWine } from '../../utils/helpers';
 import SingleItem from '../../components/SingleItem.jsx';
 import WineForm from '../../components/WineForm.jsx';
 
