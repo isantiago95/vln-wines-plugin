@@ -1,4 +1,4 @@
-import { get } from './apiClient';
+import { get, post, patch, del } from './apiClient';
 
 export function checkIfImageExists(url, callback) {
   const img = new Image();
@@ -15,32 +15,91 @@ export function checkIfImageExists(url, callback) {
   }
 }
 
-export async function retrieveData(callUsers = false) {
-  let result = {};
-  if (callUsers) {
-    const { data, status } = await get('/users');
-    if (status === 200) result = { ...result, users: buildDevsArray(data) };
-  }
-  const stackList = getStackList();
-  if (!stackList) {
-    const { data, status } = await get('/stack');
-    if (status === 200) {
-      localStorage.setItem('stackList', JSON.stringify(data));
-      result = { ...result, stack: data };
-    }
-  } else {
-    result = { ...result, stack: stackList };
-  }
-
-  return result;
+export function isEmptyObject(obj) {
+  return JSON.stringify(obj) === '{}';
 }
 
-export const getStackList = () => JSON.parse(localStorage.getItem('stackList'));
+export const isEmptyArray = array => {
+  if (Array.isArray(array) && array.length) return false;
+  else return true;
+};
 
-export const buildDevsArray = ({ devs, stack }) =>
-  devs.map(dev => {
-    return {
-      ...dev,
-      stack: stack[dev.id],
-    };
-  });
+export const getWines = async () => {
+  try {
+    const { data } = await get('/wines');
+    if (!isEmptyArray(data)) {
+      localStorage.setItem('vln-wines', JSON.stringify(data));
+      return data;
+    } else return [];
+  } catch (error) {}
+};
+
+export const dispatchWine = async (type, payload) => {
+  // console.log({ type, payload });
+  try {
+    let res = null;
+    switch (type) {
+      case 'add': {
+        res = await post('/wines', payload);
+        break;
+      }
+      case 'update': {
+        res = await patch(`/wines/${payload.id}`, { ...payload, id: null });
+        break;
+      }
+      case 'delete': {
+        res = await del(`/wines/${payload}`);
+        break;
+      }
+      default:
+        break;
+    }
+    console.log(res);
+    if (res.data.query_response === 'success') {
+      if (type === 'add') alert('Wine added successfully');
+      else if (type === 'update') alert('Wine updated successfully');
+      else if (type === 'delete') alert('Wine deleted successfully');
+      res = null;
+      return await getWines();
+    } else {
+      alert('Oops, there was an error, please try again...');
+      res = null;
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// const updateUrl = str => str.replace('https://vinicola-la-nuestra.local', '');
+
+// export const updateData = async wines => {
+//   try {
+//     wines.forEach(async w => {
+//       const updated = prices.find(p => p.name === w.name);
+//       const data = {
+//         ...w,
+//         ...updated,
+//         id: null,
+//       };
+//       // console.log(data);
+//       const res = await patch(`/wines/${w.id}`, {
+//         ...w,
+//         ...updated,
+//         id: null,
+//       });
+//       console.log(res);
+//     });
+//   } catch (error) {}
+// };
+
+// const prices = [
+//   { name: 'Mision', price_es: '$350.00 MXN', price_en: '$12.00 USD' },
+//   { name: 'Merlot', price_es: '$430.00 MXN', price_en: '$15.00 USD' },
+//   { name: 'Reserva', price_es: '$430.00 MXN', price_en: '$15.00 USD' },
+//   { name: 'Adalid', price_es: '$400.00 MXN', price_en: '$14.00 USD' },
+//   { name: 'Cantiga', price_es: '$330.00 MXN', price_en: '$12.00 USD' },
+//   { name: 'Alabardero', price_es: '$410.00 MXN', price_en: '$14.00 USD' },
+//   { name: 'Juglar', price_es: '$400.00 MXN', price_en: '$15.00 USD' },
+//   { name: 'Princesa', price_es: '$350.00 MXN', price_en: '$10.00 USD' },
+// ];

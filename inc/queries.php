@@ -1,151 +1,138 @@
 <?php
 
 
-/* function to get all stack categories */
-function getStackCategories(){
+/* function to get all products */
+function getAllWines(){
     global $wpdb;
-    $ms_stack = $wpdb->prefix . 'ms_stack';
-    $query = "SELECT * FROM $ms_stack";
+    $vln_wines = $wpdb->prefix . 'wines';
+    $query = "SELECT * FROM $vln_wines";
     $query_result = $wpdb->get_results($query, ARRAY_A);
     return rest_ensure_response($query_result);
 }
 
-
-function getDevelopers(){
+function createWine($req){
     global $wpdb;
-    // get all devs
-    $ms_devs = $wpdb->prefix.'ms_devs';
-    $sql1 = "SELECT * FROM $ms_devs";
-    $devs_query = $wpdb->get_results($sql1, ARRAY_A);
-    // get all relations
-    $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
-    $sql2 = "SELECT * FROM $ms_devs_stack";
-    $stack_query = $wpdb->get_results($sql2, ARRAY_A);
-
-    // group stack results into an array according the id_dev of each
-    $group = [];
-    foreach ($stack_query as $obj) {
-        $group[$obj['id_dev']][] = $obj;
-    }
-
-    $result = (object) [
-        'devs' => $devs_query,
-        'stack' => $group,
-    ];
-
-    return rest_ensure_response($result);
-}
-
-function msCreateUser($req){
-    global $wpdb;
-
+    
     $name = sanitize_text_field($req['name']);
     $image_url = sanitize_text_field($req['image_url']);
-    $description = sanitize_text_field($req['description']);
-    $role = sanitize_text_field($req['role']);
-    $country = sanitize_text_field($req['country']);
-    $years_experience = sanitize_text_field($req['years_experience']);
-    $stack = json_decode($req['id_stack']); // will be an array
-    $city = sanitize_text_field($req['city']);
-    $history = sanitize_text_field($req['history']);
-    $preference = sanitize_text_field($req['preference']);
+    $status = sanitize_text_field($req['status']);
+    $description_es = sanitize_text_field($req['description_es']);
+    $description_en = sanitize_text_field($req['description_en']);
+    $grape_varietal_es = sanitize_text_field($req['grape_varietal_es']);
+    $origin_country_es = sanitize_text_field($req['origin_country_es']);
+    $food_pairing_es = sanitize_text_field($req['food_pairing_es']);
+    $awards_es = sanitize_text_field($req['awards_es']);
+    $grape_varietal_en = sanitize_text_field($req['grape_varietal_en']);
+    $origin_country_en = sanitize_text_field($req['origin_country_en']);
+    $food_pairing_en = sanitize_text_field($req['food_pairing_en']);
+    $awards_en = sanitize_text_field($req['awards_en']);
+    $award_image = sanitize_text_field($req['award_image']);
+    $price_es = sanitize_text_field($req['price_es']);
+    $price_en = sanitize_text_field($req['price_en']);
+    $datasheet_es = sanitize_text_field($req['datasheet_es']);
+    $datasheet_en = sanitize_text_field($req['datasheet_en']);
 
 
-    $ms_devs = $wpdb->prefix.'ms_devs';
+    $vln_wines = $wpdb->prefix . 'wines';
     $data = [
         'name' => $name,
         'image_url' => $image_url,
-        'description' => $description,
-        'role' => $role,
-        'country' => $country,
-        'years_experience' => $years_experience,
-        'city' => $city,
-        'history' => $history,
-        'preference' => $preference
+        'status' => $status,
+        'description_es' => $description_es,
+        'description_en' => $description_en,
+        'grape_varietal_es' => $grape_varietal_es,
+        'origin_country_es' => $origin_country_es,
+        'food_pairing_es' => $food_pairing_es,
+        'awards_es' => $awards_es,
+        'grape_varietal_en' => $grape_varietal_en,
+        'origin_country_en' => $origin_country_en,
+        'food_pairing_en' => $food_pairing_en,
+        'awards_en' => $awards_en,
+        'award_image' => $award_image,
+        'price_es' => $price_es,
+        'price_en' => $price_en,
+        'datasheet_es' => $datasheet_es,
+        'datasheet_en' => $datasheet_en,
     ];
-    $query_response = $wpdb->insert($ms_devs,$data);
+    $query_response = $wpdb->insert($vln_wines,$data);
     $id = $wpdb->insert_id;
-    
-    $ms_devs_stack = $wpdb->prefix . 'ms_devs_stack';
 
-    foreach ($stack as $key => $value) {
-        $wpdb->insert($ms_devs_stack, [
-            'id_dev'=>$id,
-            'id_stack'=>$value->id_stack,
-            'years'=>$value->years
-        ]);
-    }
+    // var_dump($query_response, $id);
     
     $result = (object) [
-        "query_response" => $query_response,
+        "query_response" => $query_response === 1 ? 'success' : 'error',
         "id" => $id
     ];
 
     return rest_ensure_response($result);
 }
 
-function msUpdateUser($req){
+function updateWine($req){
     global $wpdb;
 
     $id = sanitize_text_field($req['id']);
     $name = sanitize_text_field($req['name']);
     $image_url = sanitize_text_field($req['image_url']);
-    $description = sanitize_text_field($req['description']);
-    $role = sanitize_text_field($req['role']);
-    $country = sanitize_text_field($req['country']);
-    $years_experience = sanitize_text_field($req['years_experience']);
-    $stack = json_decode($req['id_stack']); // will be an array
-    $city = sanitize_text_field($req['city']);
-    $history = sanitize_text_field($req['history']);
-    $preference = sanitize_text_field($req['preference']);
+    $status = sanitize_text_field($req['status']);
+    $description_es = sanitize_text_field($req['description_es']);
+    $description_en = sanitize_text_field($req['description_en']);
+    $grape_varietal_es = sanitize_text_field($req['grape_varietal_es']);
+    $origin_country_es = sanitize_text_field($req['origin_country_es']);
+    $food_pairing_es = sanitize_text_field($req['food_pairing_es']);
+    $awards_es = sanitize_text_field($req['awards_es']);
+    $grape_varietal_en = sanitize_text_field($req['grape_varietal_en']);
+    $origin_country_en = sanitize_text_field($req['origin_country_en']);
+    $food_pairing_en = sanitize_text_field($req['food_pairing_en']);
+    $awards_en = sanitize_text_field($req['awards_en']);
+    $award_image = sanitize_text_field($req['award_image']);
+    $price_es = sanitize_text_field($req['price_es']);
+    $price_en = sanitize_text_field($req['price_en']);
+    $datasheet_es = sanitize_text_field($req['datasheet_es']);
+    $datasheet_en = sanitize_text_field($req['datasheet_en']);
 
-    $ms_devs_stack = $wpdb->prefix.'ms_devs_stack';
-    $wpdb->delete($ms_devs_stack,['id_dev'=>$id]);
-
-    foreach ($stack as $key => $value) {
-        $wpdb->insert($ms_devs_stack, [
-            'id_dev'=>$id,
-            'id_stack'=>$value->id_stack,
-            'years'=>$value->years
-        ]);
-    }
-
-    $ms_devs = $wpdb->prefix.'ms_devs';
+    $vln_wines = $wpdb->prefix . 'wines';
     $data = [
         'name' => $name,
         'image_url' => $image_url,
-        'description' => $description,
-        'role' => $role,
-        'country' => $country,
-        'years_experience' => $years_experience,
-        'city' => $city,
-        'history' => $history,
-        'preference' => $preference
+        'status' => $status,
+        'description_es' => $description_es,
+        'description_en' => $description_en,
+        'grape_varietal_es' => $grape_varietal_es,
+        'origin_country_es' => $origin_country_es,
+        'food_pairing_es' => $food_pairing_es,
+        'awards_es' => $awards_es,
+        'grape_varietal_en' => $grape_varietal_en,
+        'origin_country_en' => $origin_country_en,
+        'food_pairing_en' => $food_pairing_en,
+        'awards_en' => $awards_en,
+        'award_image' => $award_image,
+        'price_es' => $price_es,
+        'price_en' => $price_en,
+        'datasheet_es' => $datasheet_es,
+        'datasheet_en' => $datasheet_en,
     ];
-    $query_response = $wpdb->update($ms_devs,$data, ['id'=>$id]);
-
+    $query_response = $wpdb->update($vln_wines,$data, ['id'=>$id]);
+        
+    // var_dump($query_response);
+    
     $result = (object) [
-        "query_response" => $query_response,
+        "query_response" => $query_response === 1 ? 'success' : 'error',
+        "req" => $req
     ];
 
     return rest_ensure_response($result);
 }
 
-function msDeleteUser($req){
+function deleteWine($req){
     global $wpdb;
     
-    $id = intval(sanitize_text_field($req['id']));
-    
-    // $wpdb->show_errors();
-    $ms_devs = $wpdb->prefix.'ms_devs';
-    $ms_devs_stack = $wpdb->prefix.'ms_devs_stack';
+    $id = sanitize_text_field($req['id']);
 
-    $delete_relation = $wpdb->delete($ms_devs_stack,['id_dev'=>$id]);
-    $delete_dev = $wpdb->delete($ms_devs,['id'=>$id]);
-    
+    $vln_wines = $wpdb->prefix . 'wines';
+    $query_response = $wpdb->delete($vln_wines,['id'=>$id]);
+
     $result = (object) [
-        "query_response" => $delete_dev,
-        "delete_relation" => $delete_relation,
+        "query_response" => $query_response === 1 ? 'success' : 'error',
     ];
     return rest_ensure_response($result);
 }

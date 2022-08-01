@@ -2,7 +2,7 @@
 
 /* create endopoints */
 
-function ms_permissions($private){
+function vln_permissions($private){
     if($private){
         return current_user_can('publish_posts');
     } else {
@@ -10,73 +10,60 @@ function ms_permissions($private){
     }
 }
 
-class MS_Devs_Endpoints {
+class VLN_wines_Endpoints {
 
     public function __construct(){
         add_action('rest_api_init', [$this, 'create_api_routes']);
     }
 
     public function create_api_routes(){
-        register_rest_route('msapi/v1', '/stack', [
+        register_rest_route('vln-api/v1', '/wines', [
             'methods' => 'GET',
-            'callback' => [$this,'get_stack_categories'],
-            'permission_callback' => [$this, 'get_stack_categories_permission']
+            'callback' => [$this,'get_all_wines'],
+            'permission_callback' => [$this, 'get_all_wines_permission']
         ]);
-        register_rest_route('msapi/v1', '/users', [
-            'methods' => 'GET',
-            'callback' => [$this,'get_users'],
-            'permission_callback' => [$this, 'get_users_permission']
-        ]);
-        register_rest_route('msapi/v1', '/users', [
+        register_rest_route('vln-api/v1', '/wines', [
             'methods' => 'POST',
-            'callback' => [$this,'create_user'],
-            'permission_callback' => [$this, 'create_user_permission']
+            'callback' => [$this,'create_wine'],
+            'permission_callback' => [$this, 'create_wine_permission']
         ]);
-        register_rest_route('msapi/v1', '/users', [
-            'methods' => 'PUT',
-            'callback' => [$this,'update_user'],
-            'permission_callback' => [$this, 'update_user_permission']
+        register_rest_route('vln-api/v1', '/wines/(?P<id>\d+)', [
+            'methods' => 'PATCH',
+            'callback' => [$this,'update_wine'],
+            'permission_callback' => [$this, 'update_wine_permission']
         ]);
-        register_rest_route('msapi/v1', '/users', [
+        register_rest_route('vln-api/v1', '/wines/(?P<id>\d+)', [
             'methods' => 'DELETE',
-            'callback' => [$this,'delete_user'],
-            'permission_callback' => [$this, 'delete_user_permission']
+            'callback' => [$this,'delete_wine'],
+            'permission_callback' => [$this, 'delete_wine_permission']
         ]);
     }
 
     // functions to call on endpoints
-    public function get_stack_categories(){
-        return getStackCategories();
+    public function get_all_wines(){
+        return getAllWines();
     }
-    public function get_stack_categories_permission(){
-        return ms_permissions(false);
+    public function get_all_wines_permission(){
+        return vln_permissions(false);
     }
-    
-    // devs functions
-    public function get_users(){
-        return getDevelopers();
+    public function create_wine($req){
+        return createWine($req);
     }
-    public function get_users_permission(){
-        return ms_permissions(false);
+    public function create_wine_permission(){
+        return vln_permissions(false);
     }
-    public function create_user($req){
-        return msCreateUser($req);
+    public function update_wine($req){
+        return updateWine($req);
     }
-    public function create_user_permission(){
-        return ms_permissions(false);
+    public function update_wine_permission(){
+        return vln_permissions(false);
     }
-    public function update_user($req){
-        return msUpdateUser($req);
+    public function delete_wine($req){
+        return deleteWine($req);
     }
-    public function update_user_permission(){
-        return ms_permissions(false);
-    }
-    public function delete_user($req){
-        return msDeleteUser($req);
-    }
-    public function delete_user_permission(){
-        return ms_permissions(false);
+    public function delete_wine_permission(){
+        return vln_permissions(false);
     }
 
 }
-new MS_Devs_Endpoints();
+new VLN_wines_Endpoints();

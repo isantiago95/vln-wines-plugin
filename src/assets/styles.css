@@ -1,35 +1,4 @@
-/* STACK ADMIN MENU CLASSES */
-.stack-list {
-  overflow: auto;
-  height: 80vh;
-}
-.stack-icon {
-  height: 2.5em;
-  margin: 0 0.6em;
-}
-.actions {
-  width: auto;
-  height: 1.4em;
-  margin: 0 0.4em;
-}
 .card {
+  max-width: 100%;
   margin: 0;
-  box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.41);
-}
-
-.card .stack-image {
-  height: 25em;
-}
-
-/* DEVS MENU CLASSES */
-.preference-icon {
-  height: 2em;
-  margin: 0 0.6em;
-}
-
-.dev-img {
-  height: 12em;
-  width: auto;
-  margin: auto;
-  display: block;
 }
