@@ -74,16 +74,16 @@ function updateWine($req){
     $name = sanitize_text_field($req['name']);
     $image_url = sanitize_text_field($req['image_url']);
     $status = sanitize_text_field($req['status']);
-    $description_es = sanitize_text_field($req['description_es']);
-    $description_en = sanitize_text_field($req['description_en']);
+    $description_es = sanitize_textarea_field($req['description_es']);
+    $description_en = sanitize_textarea_field($req['description_en']);
     $grape_varietal_es = sanitize_text_field($req['grape_varietal_es']);
     $origin_country_es = sanitize_text_field($req['origin_country_es']);
     $food_pairing_es = sanitize_text_field($req['food_pairing_es']);
-    $awards_es = sanitize_text_field($req['awards_es']);
+    $awards_es = sanitize_textarea_field($req['awards_es']);
     $grape_varietal_en = sanitize_text_field($req['grape_varietal_en']);
     $origin_country_en = sanitize_text_field($req['origin_country_en']);
     $food_pairing_en = sanitize_text_field($req['food_pairing_en']);
-    $awards_en = sanitize_text_field($req['awards_en']);
+    $awards_en = sanitize_textarea_field($req['awards_en']);
     $award_image = sanitize_text_field($req['award_image']);
     $price_es = sanitize_text_field($req['price_es']);
     $price_en = sanitize_text_field($req['price_en']);
@@ -117,7 +117,8 @@ function updateWine($req){
     
     $result = (object) [
         "query_response" => $query_response === 1 ? 'success' : 'error',
-        "req" => $req
+        "data" => $data,
+        "id" => $id
     ];
 
     return rest_ensure_response($result);

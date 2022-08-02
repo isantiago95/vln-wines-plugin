@@ -35,7 +35,7 @@ export const getWines = async () => {
 };
 
 export const dispatchWine = async (type, payload) => {
-  // console.log({ type, payload });
+  console.log({ type, payload });
   try {
     let res = null;
     switch (type) {
@@ -54,7 +54,7 @@ export const dispatchWine = async (type, payload) => {
       default:
         break;
     }
-    // console.log(res);
+    console.log(res);
     if (res.data.query_response === 'success') {
       if (type === 'add') alert('Wine added successfully');
       else if (type === 'update') alert('Wine updated successfully');
@@ -69,6 +69,14 @@ export const dispatchWine = async (type, payload) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const splitAwards = str => {
+  if (str) {
+    const [name, rest] = str.split(' | ');
+    const color = name === 'ORO' || name === 'GOLD' ? 'gold' : 'silver';
+    return { name, rest, color };
+  } else return;
 };
 
 // const updateUrl = str => str.replace('https://vinicola-la-nuestra.local', '');
@@ -95,3 +103,5 @@ export const dispatchWine = async (type, payload) => {
 //   { name: 'Juglar', price_es: '$400.00 MXN', price_en: '$15.00 USD' },
 //   { name: 'Princesa', price_es: '$350.00 MXN', price_en: '$10.00 USD' },
 // ];
+
+// export const replaceLineBreak = (str, removeLine = true) => removeLine ? str.replaceAll('\n', '**') : str.replaceAll('**', '\n');

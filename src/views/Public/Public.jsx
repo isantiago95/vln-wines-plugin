@@ -18,6 +18,7 @@ const Public = () => {
   const retrieveData = async () => {
     setLoading(true);
     const res = await getWines();
+    console.log('wines: ', res);
     setWines(res);
     setLoading(false);
   };

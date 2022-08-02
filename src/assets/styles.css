@@ -11,6 +11,21 @@
   text-align-last: start;
 }
 
+.wine-row .descriptive-table td {
+  text-align: left;
+}
+
+.line-break {
+  white-space: pre-wrap;
+}
+
+.gold {
+  color: #cfb53b;
+}
+.silver {
+  color: #999;
+}
+
 .wine-row .descriptive-table th {
   border-right: 1px solid rgba(0, 0, 0, 0.8);
 }
@@ -27,18 +42,10 @@
   gap: 0.5em;
 }
 
-.animate.pop {
-  animation: moveToRight 1.5s ease-in-out;
+.wine-bottle {
+  background-repeat: no-repeat;
 }
 
-@keyframes animate-pop {
-  0% {
-    opacity: 0;
-    transform: translateX(0px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(200px);
-  }
+.animate.pop {
+  animation: moveToRight 1.5s ease-in-out;
 }

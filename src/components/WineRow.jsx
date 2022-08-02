@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Table, Modal, ModalBody } from 'reactstrap';
 import background from '../assets/images/prehispanic-art.png';
-import { isOdd } from '../utils/helpers';
+import { isOdd, splitAwards } from '../utils/helpers';
 
 const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
   const {
@@ -26,10 +26,10 @@ const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
 
   return (
     <Row className={`wine-row flex-wrap ${!isOdd(idx) && 'flex-row-reverse'}`} id={name}>
-      <Col sm='12' md='4' lg='4' xl='4'></Col>
-      <Col sm='12' md='4' lg='4' xl='4' className='p-5'>
+      <Col sm='12' md='12' lg='4' xl='4'></Col>
+      <Col sm='12' md='12' lg='4' xl='4' className='p-5'>
         <h2 className='vin-subtitle'>{name}</h2>
-        <p className='vin-wine-text'>{isMX ? description_es : description_en}</p>
+        <p className='vin-wine-text line-break'>{isMX ? description_es : description_en}</p>
         <Table borderless hover className='descriptive-table'>
           <tbody>
             <tr>
@@ -50,7 +50,21 @@ const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
                 <th>
                   <img src={award_image} alt={name} />
                 </th>
-                <td>{isMX ? awards_es : awards_en}</td>
+                <td className='line-break'>
+                  {isMX ? (
+                    <>
+                      <b className={splitAwards(awards_es).color}>{splitAwards(awards_es).name}</b>
+                      {' | '}
+                      {splitAwards(awards_es).rest}
+                    </>
+                  ) : (
+                    <>
+                      <b className={splitAwards(awards_en).color}>{splitAwards(awards_en).name}</b>
+                      {' | '}
+                      {splitAwards(awards_en).rest}
+                    </>
+                  )}
+                </td>
               </tr>
             )}
           </tbody>
@@ -66,7 +80,7 @@ const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
       </Col>
       <Col
         sm='12'
-        md='4'
+        md='12'
         lg='4'
         xl='4'
         className='wine-bottle text-center'
