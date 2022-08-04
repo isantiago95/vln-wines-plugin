@@ -1,3 +1,62 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.breathing {
+  -webkit-animation: breathing 5s ease-out infinite normal;
+  animation: breathing 5s ease-out infinite normal;
+}
+
+@-webkit-keyframes breathing {
+  0% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+
+  25% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  60% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+
+  100% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+
+@keyframes breathing {
+  0% {
+    -webkit-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+
+  25% {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+  }
+
+  60% {
+    -webkit-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+
+  100% {
+    -webkit-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+
 .card {
   max-width: 100%;
   margin: 0;
@@ -7,16 +66,17 @@
   text-transform: uppercase;
 }
 
-.wine-row .descriptive-table tbody {
-  text-align-last: start;
-}
-
 .wine-row .descriptive-table td {
   text-align: left;
+  padding-left: 1em;
 }
 
 .line-break {
   white-space: pre-wrap;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .gold {
@@ -28,6 +88,9 @@
 
 .wine-row .descriptive-table th {
   border-right: 1px solid rgba(0, 0, 0, 0.8);
+  text-align: left;
+  font-weight: 400;
+  font-size: 1em;
 }
 
 .wine-row .descriptive-table img {
@@ -48,4 +111,48 @@
 
 .animate.pop {
   animation: moveToRight 1.5s ease-in-out;
+}
+
+.vln-separator {
+  height: 6em;
+  background-color: rgb(80, 80, 80);
+  filter: hue-rotate(90deg) br;
+  margin-bottom: 6em;
+}
+.vln-separator .row {
+  background-repeat: inherit;
+  background-size: auto;
+  align-items: flex-end;
+}
+
+/* .award-row {
+  border: 1px solid red;
+} */
+
+.award-row .award-col {
+  height: 9em;
+}
+
+.award-description {
+  display: flex;
+  align-items: center;
+}
+
+.vln-award-bottle {
+  height: 9em;
+  transform: rotate(90deg) scale(2.5);
+}
+
+@media screen and (max-width: 600px) {
+  .award-row .award-col {
+    height: auto;
+  }
+  .award-description {
+    justify-content: center;
+    padding: 0 5em;
+  }
+  .vln-our-awards {
+    text-align: center;
+    margin-bottom: 2em;
+  }
 }

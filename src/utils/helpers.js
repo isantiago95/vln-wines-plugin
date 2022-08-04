@@ -71,11 +71,32 @@ export const dispatchWine = async (type, payload) => {
   }
 };
 
-export const splitAwards = str => {
+export const splitAwards = (str, showAwards = false) => {
   if (str) {
-    const [name, rest] = str.split(' | ');
-    const color = name === 'ORO' || name === 'GOLD' ? 'gold' : 'silver';
-    return { name, rest, color };
+    if (showAwards) {
+      const [title, ...awards] = str.split('\n');
+      const [award, ...rest] = title.split(' | ');
+      const color = award === 'ORO' || award === 'GOLD' ? 'gold' : 'silver';
+      const name = (
+        <span className='fs-6 text'>
+          {rest.join('').split(' ')[1]} | <strong className={color}>{award}</strong>
+        </span>
+      );
+      const awardsDescription = (
+        <ul>
+          {awards.map((a, idx) => (
+            <li key={idx}>
+              <span className='fs-6 text'>{a}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      return { name, awards: awardsDescription };
+    } else {
+      const [name, rest] = str.split(' | ');
+      const color = name === 'ORO' || name === 'GOLD' ? 'gold' : 'silver';
+      return { name, rest, color };
+    }
   } else return;
 };
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Row, Col, Table, Modal, ModalBody } from 'reactstrap';
+import { Row, Col, Table } from 'reactstrap';
 import background from '../assets/images/prehispanic-art.png';
 import { isOdd, splitAwards } from '../utils/helpers';
+import { message_es } from '../utils/whatsapp';
 
-const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
+const WineRow = ({ wine, isMX, idx, openModal }) => {
   const {
     name,
     image_url,
@@ -29,19 +30,21 @@ const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
       <Col sm='12' md='12' lg='4' xl='4'></Col>
       <Col sm='12' md='12' lg='4' xl='4' className='p-5'>
         <h2 className='vin-subtitle'>{name}</h2>
-        <p className='vin-wine-text line-break'>{isMX ? description_es : description_en}</p>
+        <p className='vin-wine-text line-break text-justify'>
+          {isMX ? description_es : description_en}
+        </p>
         <Table borderless hover className='descriptive-table'>
           <tbody>
             <tr>
-              <th>Varietal</th>
+              <th>{isMX ? 'Varietal' : 'Grape Varietal'}</th>
               <td>{isMX ? grape_varietal_es : grape_varietal_en}</td>
             </tr>
             <tr>
-              <th>Origen</th>
+              <th>{isMX ? 'Orígen' : 'Country of Origin'}</th>
               <td>{isMX ? origin_country_es : origin_country_en}</td>
             </tr>
             <tr>
-              <th>Maridaje</th>
+              <th>{isMX ? 'Maridaje' : 'Food Pairing'}</th>
               <td>{isMX ? food_pairing_es : food_pairing_en}</td>
             </tr>
 
@@ -67,6 +70,11 @@ const WineRow = ({ wine, isMX, idx, openModal, closeModal }) => {
                 </td>
               </tr>
             )}
+
+            <tr>
+              <th>{isMX ? 'Precio' : 'Price'}</th>
+              <td>{isMX ? price_es : price_en}</td>
+            </tr>
           </tbody>
         </Table>
         <div className='buttons-group'>
