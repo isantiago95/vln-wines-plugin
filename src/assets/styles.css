@@ -71,6 +71,11 @@
   padding-left: 1em;
 }
 
+.whatsapp-icon {
+  width: 2em;
+  filter: invert(1);
+}
+
 .line-break {
   white-space: pre-wrap;
 }

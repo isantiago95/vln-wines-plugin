@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, createRef } from 'react';
 import { Row, Col } from 'reactstrap';
 import { getWines, isEmptyArray } from '../../utils/helpers';
 import WineRow from '../../components/WineRow.jsx';
@@ -14,18 +14,21 @@ const Public = () => {
   const [loading, setLoading] = React.useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dataSheet, setDataSheet] = React.useState(null);
-  const params = new URLSearchParams(document.location.search);
 
-  const isMX = params.get('lang') ? false : true;
+  const params = new URLSearchParams(document.location.search);
+  const isMx = params.get('lang') ? false : true;
+  const wineId = params.get('wine');
+
+  const ref = createRef();
+  const scroll = () => ref && ref.current && ref.current.scrollIntoView({ behavior: 'smooth' });
 
   React.useEffect(() => {
     retrieveData();
   }, []);
 
   React.useEffect(() => {
-    const awards = wines.filter(w => w.status === 'published' && w.award_image);
-    console.log('awards: ', awards);
-  }, [wines]);
+    if (!isEmptyArray(wines) && !loading && wineId) scroll();
+  }, [wineId, wines, loading]);
 
   const retrieveData = async () => {
     setLoading(true);
@@ -55,7 +58,13 @@ const Public = () => {
           {wines
             .filter(p => p.status === 'published')
             .map((w, idx) => (
-              <WineRow wine={w} isMX={isMX} idx={idx} openModal={openModal} />
+              <WineRow
+                wine={w}
+                isMx={isMx}
+                idx={idx}
+                openModal={openModal}
+                ref={wineId === w.name.toLowerCase() ? ref : null}
+              />
             ))}
 
           <Row className='vln-separator'>
@@ -64,7 +73,7 @@ const Public = () => {
                 <img src={awardMedals} alt='awards' />
               </Col>
               <Col sm='12' md='9' lg='9' xl='9' className='vln-our-awards'>
-                <h2 className='text-uppercase'>{isMX ? 'Nuestros premios' : 'Our Awards'}</h2>
+                <h2 className='text-uppercase'>{isMx ? 'Nuestros premios' : 'Our Awards'}</h2>
               </Col>
             </Row>
           </Row>
@@ -73,7 +82,7 @@ const Public = () => {
             {wines
               .filter(w => w.status === 'published' && w.award_image)
               .map(wine => (
-                <Awards wine={wine} isMX={isMX} />
+                <Awards wine={wine} isMx={isMx} />
               ))}
           </div>
         </React.Fragment>

@@ -100,6 +100,19 @@ export const splitAwards = (str, showAwards = false) => {
   } else return;
 };
 
+const whatsappApi = 'https://api.whatsapp.com/send?phone=526644840514&text=';
+
+export const generateMessage = txt =>
+  txt.replaceAll(' ', '%20').replaceAll('"', '%22').replaceAll('¿', '%C2%BF');
+
+export const whatsappLink = (isMx = true, wine) =>
+  `${whatsappApi}${isMx ? whats_es(wine) : whats_en(wine)}`;
+
+const whats_es = wine =>
+  `Hola,%20estoy%20interesado%20en%20el%20vino%20%22${wine}%22,%20%C2%BFc%C3%B3mo%20puedo%20adquirirlo?`;
+const whats_en = wine =>
+  `Hello,%20I%20am%20interested%20in%20the%20wine%20%22${wine}%22,%20how%20can%20I%20buy%20it?`;
+
 // const updateUrl = str => str.replace('https://vinicola-la-nuestra.local', '');
 
 // export const updateData = async wines => {

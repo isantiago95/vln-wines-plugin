@@ -2,12 +2,12 @@ import React from 'react';
 import { Row, Col } from 'reactstrap';
 import { splitAwards } from '../utils/helpers';
 
-const Awards = ({ wine, isMX }) => {
+const Awards = ({ wine, isMx }) => {
   const { image_url, name, awards_es, awards_en } = wine;
   const [data, setData] = React.useState({});
 
   React.useEffect(() => {
-    if (isMX) setData(splitAwards(awards_es, true));
+    if (isMx) setData(splitAwards(awards_es, true));
     else setData(splitAwards(awards_en, true));
   }, []);
 

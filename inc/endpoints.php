@@ -37,6 +37,7 @@ class VLN_wines_Endpoints {
             'callback' => [$this,'delete_wine'],
             'permission_callback' => [$this, 'delete_wine_permission']
         ]);
+
     }
 
     // functions to call on endpoints

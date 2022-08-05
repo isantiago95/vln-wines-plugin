@@ -5,7 +5,7 @@ function vln_wines_createdatabase()
 {
   global $wpdb;
 
-  /* table to save stack categories */
+  /* table to save wines categories */
   $vln_wines = $wpdb->prefix . 'wines';
   $charset_collate = $wpdb->get_charset_collate();
   $query = "CREATE TABLE IF NOT EXISTS $vln_wines (
@@ -31,6 +31,7 @@ function vln_wines_createdatabase()
   PRIMARY KEY(id)) $charset_collate;";
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta($query);
+
 }
 
 ?>
