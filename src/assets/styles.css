@@ -112,6 +112,12 @@
 
 .wine-bottle {
   background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wine-bottle img {
+  height: 43rem;
+  width: auto;
 }
 
 .animate.pop {

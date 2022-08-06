@@ -34,7 +34,6 @@ export const patch = async (url, data) => {
 
 export const del = async (url, data) => {
   try {
-    console.log({ url, data });
     return await Axios.delete(url, data);
   } catch (error) {
     return error.response;

@@ -1,4 +1,4 @@
-import React, { useRef, createRef } from 'react';
+import React from 'react';
 import { Row, Col } from 'reactstrap';
 import { getWines, isEmptyArray } from '../../utils/helpers';
 import WineRow from '../../components/WineRow.jsx';
@@ -19,16 +19,16 @@ const Public = () => {
   const isMx = params.get('lang') ? false : true;
   const wineId = params.get('wine');
 
-  const ref = createRef();
-  const scroll = () => ref && ref.current && ref.current.scrollIntoView({ behavior: 'smooth' });
-
   React.useEffect(() => {
     retrieveData();
   }, []);
 
   React.useEffect(() => {
-    if (!isEmptyArray(wines) && !loading && wineId) scroll();
+    if (!isEmptyArray(wines) && !loading && wineId) scroll(wineId);
   }, [wineId, wines, loading]);
+
+  const scroll = wineId =>
+    document.getElementById(wineId).scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   const retrieveData = async () => {
     setLoading(true);
@@ -58,13 +58,7 @@ const Public = () => {
           {wines
             .filter(p => p.status === 'published')
             .map((w, idx) => (
-              <WineRow
-                wine={w}
-                isMx={isMx}
-                idx={idx}
-                openModal={openModal}
-                ref={wineId === w.name.toLowerCase() ? ref : null}
-              />
+              <WineRow wine={w} isMx={isMx} idx={idx} openModal={openModal} />
             ))}
 
           <Row className='vln-separator'>

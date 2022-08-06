@@ -1,10 +1,10 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { Row, Col, Table, Tooltip } from 'reactstrap';
 import background from '../assets/images/prehispanic-art.png';
 import whatsappIcon from '../assets/images/whatsapp-Icon.svg';
 import { isOdd, splitAwards, whatsappLink } from '../utils/helpers';
 
-const WineRow = forwardRef(({ wine, isMx, idx, openModal }, ref) => {
+const WineRow = ({ wine, isMx, idx, openModal }) => {
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const {
@@ -21,21 +21,18 @@ const WineRow = forwardRef(({ wine, isMx, idx, openModal }, ref) => {
     food_pairing_en,
     awards_en,
     award_image,
-    price_es,
-    price_en,
+    bottle_price_es,
+    box_price_es,
+    bottle_price_en,
+    box_price_en,
     datasheet_es,
     datasheet_en,
   } = wine;
 
-  // const ref = React.useRef();
-
-  React.useEffect(() => {
-    // console.log({ ref, shouldScrollTo });
-    // shouldScrollTo && ref.current.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
   return (
-    <Row className={`wine-row flex-wrap ${!isOdd(idx) && 'flex-row-reverse'}`} id={name} ref={ref}>
+    <Row
+      className={`wine-row flex-wrap ${!isOdd(idx) && 'flex-row-reverse'}`}
+      id={name.toLowerCase()}>
       <Col sm='12' md='12' lg='4' xl='4'></Col>
       <Col sm='12' md='12' lg='4' xl='4' className='p-5'>
         <h2 className='vin-subtitle'>{name}</h2>
@@ -81,8 +78,16 @@ const WineRow = forwardRef(({ wine, isMx, idx, openModal }, ref) => {
             )}
 
             <tr>
-              <th>{isMx ? 'Precio' : 'Price'}</th>
-              <td>{isMx ? price_es : price_en}</td>
+              <th>{isMx ? '1 Botella' : '1 Bottle'}</th>
+              <td className='wine-color fs-6 text'>
+                {isMx ? `$${bottle_price_es} MXN` : `$${bottle_price_en} USD`}
+              </td>
+            </tr>
+            <tr>
+              <th>{isMx ? 'Caja 12 Botellas' : '12-Bottle Box'}</th>
+              <td className='wine-color fs-6 text'>
+                {isMx ? `$${box_price_es} MXN` : `$${box_price_en} USD`}
+              </td>
             </tr>
           </tbody>
         </Table>
@@ -111,10 +116,10 @@ const WineRow = forwardRef(({ wine, isMx, idx, openModal }, ref) => {
         xl='4'
         className='wine-bottle text-center'
         style={{ backgroundImage: `url(${background})` }}>
-        <img src={image_url} alt={`bottle of ${name}`} className='animate pop' />
+        <img src={image_url} alt={`bottle of ${name}`} className='animate pop ' />
       </Col>
     </Row>
   );
-});
+};
 
 export default WineRow;

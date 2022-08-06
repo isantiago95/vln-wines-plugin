@@ -34,17 +34,31 @@ export const getWines = async () => {
   } catch (error) {}
 };
 
+// replace the home domain of the wine urls to save into the db only the relative path
+export const parseUrl = url => url && url.replace(url.split('/wp-content')[0], '');
+
 export const dispatchWine = async (type, payload) => {
-  console.log({ type, payload });
   try {
     let res = null;
     switch (type) {
       case 'add': {
-        res = await post('/wines', payload);
+        res = await post('/wines', {
+          ...payload,
+          image_url: parseUrl(payload.image_url),
+          award_image: parseUrl(payload.award_image),
+          datasheet_es: parseUrl(payload.datasheet_es),
+          datasheet_en: parseUrl(payload.datasheet_en),
+        });
         break;
       }
       case 'update': {
-        res = await patch(`/wines/${payload.id}`, { ...payload, id: null });
+        res = await patch(`/wines/${payload.id}`, {
+          ...payload,
+          image_url: parseUrl(payload.image_url),
+          award_image: parseUrl(payload.award_image),
+          datasheet_es: parseUrl(payload.datasheet_es),
+          datasheet_en: parseUrl(payload.datasheet_en),
+        });
         break;
       }
       case 'delete': {
@@ -54,7 +68,7 @@ export const dispatchWine = async (type, payload) => {
       default:
         break;
     }
-    console.log(res);
+
     if (res.data.query_response === 'success') {
       if (type === 'add') alert('Wine added successfully');
       else if (type === 'update') alert('Wine updated successfully');
@@ -112,30 +126,3 @@ const whats_es = wine =>
   `Hola,%20estoy%20interesado%20en%20el%20vino%20%22${wine}%22,%20%C2%BFc%C3%B3mo%20puedo%20adquirirlo?`;
 const whats_en = wine =>
   `Hello,%20I%20am%20interested%20in%20the%20wine%20%22${wine}%22,%20how%20can%20I%20buy%20it?`;
-
-// const updateUrl = str => str.replace('https://vinicola-la-nuestra.local', '');
-
-// export const updateData = async wines => {
-//   try {
-//     wines.forEach(async w => {
-//       const res = await patch(`/wines/${w.id}`, {
-//         ...w,
-//         id: null,
-//       });
-//       console.log(res);
-//     });
-//   } catch (error) {}
-// };
-
-// const prices = [
-//   { name: 'Mision', price_es: '$350.00 MXN', price_en: '$12.00 USD' },
-//   { name: 'Merlot', price_es: '$430.00 MXN', price_en: '$15.00 USD' },
-//   { name: 'Reserva', price_es: '$430.00 MXN', price_en: '$15.00 USD' },
-//   { name: 'Adalid', price_es: '$400.00 MXN', price_en: '$14.00 USD' },
-//   { name: 'Cantiga', price_es: '$330.00 MXN', price_en: '$12.00 USD' },
-//   { name: 'Alabardero', price_es: '$410.00 MXN', price_en: '$14.00 USD' },
-//   { name: 'Juglar', price_es: '$400.00 MXN', price_en: '$15.00 USD' },
-//   { name: 'Princesa', price_es: '$350.00 MXN', price_en: '$10.00 USD' },
-// ];
-
-// export const replaceLineBreak = (str, removeLine = true) => removeLine ? str.replaceAll('\n', '**') : str.replaceAll('**', '\n');

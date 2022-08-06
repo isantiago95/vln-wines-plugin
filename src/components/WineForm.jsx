@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { parseUrl } from '../utils/helpers';
 
 const wineObj = {
   name: '',
@@ -16,13 +17,15 @@ const wineObj = {
   food_pairing_en: '',
   awards_en: '',
   award_image: '',
-  price_es: '',
-  price_en: '',
+  bottle_price_es: '',
+  box_price_es: '',
+  bottle_price_en: '',
+  box_price_en: '',
   datasheet_es: '',
   datasheet_en: '',
 };
 
-const WineForm = ({ dispatch, done, item }) => {
+const WineForm = ({ dispatch, done, item, waiting }) => {
   const [wine, setWine] = React.useState(wineObj);
 
   React.useEffect(() => {
@@ -58,7 +61,10 @@ const WineForm = ({ dispatch, done, item }) => {
   return (
     <Card>
       <CardBody>
-        <h2>{item ? item.name : 'New Wine'}</h2>
+        <div className='d-flex justify-content-between flex-wrap align-items-center'>
+          <h2>{item ? item.name : 'New Wine'}</h2>
+          {waiting && <h2 className='text-primary'>Please wait...</h2>}
+        </div>
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col>
@@ -281,27 +287,57 @@ const WineForm = ({ dispatch, done, item }) => {
           <Row>
             <Col>
               <FormGroup>
-                <Label for='price_es'>Price MXN</Label>
+                <Label for='bottle_price_es'>1-Bottle Price (MXN)</Label>
                 <Input
                   onChange={handleChange}
                   required
-                  id='price_es'
-                  name='price_es'
-                  value={wine.price_es || ''}
-                  placeholder='$389.80 c/u | $3880.5 caja con 12'
+                  id='bottle_price_es'
+                  name='bottle_price_es'
+                  value={wine.bottle_price_es || ''}
+                  placeholder='350.00'
+                  type='number'
                 />
               </FormGroup>
             </Col>
             <Col>
               <FormGroup>
-                <Label for='price_en'>Price USD</Label>
+                <Label for='box_price_es'>12-Box Price (MXN)</Label>
                 <Input
                   onChange={handleChange}
                   required
-                  id='price_en'
-                  name='price_en'
-                  value={wine.price_en || ''}
-                  placeholder='$19.99 c/u | $199 12-count box'
+                  id='box_price_es'
+                  name='box_price_es'
+                  value={wine.box_price_es || ''}
+                  placeholder='350.00'
+                  type='number'
+                />
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <Label for='bottle_price_en'>1-Bottle Price (USD)</Label>
+                <Input
+                  onChange={handleChange}
+                  required
+                  id='bottle_price_en'
+                  name='bottle_price_en'
+                  value={wine.bottle_price_en || ''}
+                  placeholder='19.99'
+                  type='number'
+                />
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <Label for='box_price_en'>12-Box Price (USD)</Label>
+                <Input
+                  onChange={handleChange}
+                  required
+                  id='box_price_en'
+                  name='box_price_en'
+                  value={wine.box_price_en || ''}
+                  placeholder='19.99'
+                  type='number'
                 />
               </FormGroup>
             </Col>
@@ -334,10 +370,10 @@ const WineForm = ({ dispatch, done, item }) => {
           </Row>
 
           <div className='d-flex gap-4 float-end'>
-            <Button color='danger' type='button' disabled={!item} onClick={deleteWine}>
+            <Button color='danger' type='button' disabled={!item || waiting} onClick={deleteWine}>
               Delete
             </Button>
-            <Button color='primary' type='submit'>
+            <Button color='primary' type='submit' disabled={waiting}>
               {item ? 'Update' : 'Add'} wine
             </Button>
           </div>
@@ -367,8 +403,8 @@ export default WineForm;
 //   food_pairing_en: 'Great with primerib, blue cheeseburger and hotdogs wrapped in panchetta.',
 //   awards_en: 'SILVER | Vintage 2012\n2015 Pacific Rim Wine Competition',
 //   award_image: '/wp-content/uploads/media/MEDALLA-Princesa-PacificRim-min.png',
-//   price_es: '$250 por botella | $2000 caja con doce',
-//   price_en: '$9.99 per bottle | $89 12-count box',
+//   bottle_price_es: '$250 por botella | $2000 caja con doce',
+//   bottle_price_en: '$9.99 per bottle | $89 12-count box',
 //   datasheet_es: '/wp-content/uploads/media/Princesa-2017-FichaTécnica-NotaCata-Esp-min.pdf',
 //   datasheet_en: '/wp-content/uploads/media/Princesa-en.pdf',
 // };
