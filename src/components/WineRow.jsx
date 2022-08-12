@@ -4,7 +4,9 @@ import background from '../assets/images/prehispanic-art.png';
 import whatsappIcon from '../assets/images/whatsapp-Icon.svg';
 import { isOdd, splitAwards, whatsappLink } from '../utils/helpers';
 
-const WineRow = ({ wine, isMx, idx, openModal }) => {
+const WineRow = ({ wine, language, idx, openModal }) => {
+  const isMx = language === 'es' ? true : false;
+
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
-import { getWines, isEmptyArray } from '../../utils/helpers';
+import { getWines, isEmptyArray, getLanguage } from '../../utils/helpers';
 import WineRow from '../../components/WineRow.jsx';
 import Awards from '../../components/Awards.jsx';
 import DataSheetModal from '../../components/DataSheetModal.jsx';
@@ -14,12 +14,13 @@ const Public = () => {
   const [loading, setLoading] = React.useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dataSheet, setDataSheet] = React.useState(null);
+  const [language, setLanguage] = React.useState(getLanguage());
 
   const params = new URLSearchParams(document.location.search);
-  const isMx = params.get('lang') ? false : true;
   const wineId = params.get('wine');
 
   React.useEffect(() => {
+    setLanguage(getLanguage());
     retrieveData();
   }, []);
 
@@ -58,7 +59,7 @@ const Public = () => {
           {wines
             .filter(p => p.status === 'published')
             .map((w, idx) => (
-              <WineRow wine={w} isMx={isMx} idx={idx} openModal={openModal} />
+              <WineRow wine={w} language={language} idx={idx} openModal={openModal} />
             ))}
 
           <Row className='vln-separator'>
@@ -67,7 +68,7 @@ const Public = () => {
                 <img src={awardMedals} alt='awards' />
               </Col>
               <Col sm='12' md='9' lg='9' xl='9' className='vln-our-awards'>
-                <h2 className='text-uppercase'>{isMx ? 'Nuestros premios' : 'Our Awards'}</h2>
+                <h2 className='text-uppercase'>{language ? 'Nuestros premios' : 'Our Awards'}</h2>
               </Col>
             </Row>
           </Row>
@@ -76,7 +77,7 @@ const Public = () => {
             {wines
               .filter(w => w.status === 'published' && w.award_image)
               .map(wine => (
-                <Awards wine={wine} isMx={isMx} />
+                <Awards wine={wine} language={language} />
               ))}
           </div>
         </React.Fragment>

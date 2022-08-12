@@ -126,3 +126,12 @@ const whats_es = wine =>
   `Hola,%20estoy%20interesado%20en%20el%20vino%20%22${wine}%22,%20%C2%BFc%C3%B3mo%20puedo%20adquirirlo?`;
 const whats_en = wine =>
   `Hello,%20I%20am%20interested%20in%20the%20wine%20%22${wine}%22,%20how%20can%20I%20buy%20it?`;
+
+export function getLanguage(cookieName = 'wp-wpml_current_language') {
+  let cookie = {};
+  document.cookie.split(';').forEach(function (el) {
+    let [key, value] = el.split('=');
+    cookie[key.trim()] = value;
+  });
+  return cookie[cookieName];
+}

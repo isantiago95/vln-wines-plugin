@@ -1,6 +1,19 @@
 import React from 'react';
-import { Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
-import { parseUrl } from '../utils/helpers';
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  UncontrolledPopover,
+  PopoverBody,
+  PopoverHeader,
+  Row,
+} from 'reactstrap';
+import instructions from '../assets/images/awards-example.png';
 
 const wineObj = {
   name: '',
@@ -194,6 +207,30 @@ const WineForm = ({ dispatch, done, item, waiting }) => {
               <FormGroup row>
                 <Label for='awards_es' sm={2}>
                   Awards
+                  <UncontrolledPopover
+                    placement='top'
+                    target='awards_es'
+                    trigger='focus'
+                    className='awards-popover'>
+                    <PopoverHeader className='text-danger'>Importante!!</PopoverHeader>
+                    <PopoverBody>
+                      Este plugin es muy sensitivo, para mostrar correctamente la información debe
+                      agregarla siguiendo este ejemplo:
+                      <p>
+                        <img
+                          src={instructions}
+                          alt='instructions'
+                          style={{ width: '-webkit-fill-available' }}
+                        />
+                        <ol className='ms-0'>
+                          <li>Premio: SILVER, GOLD, ORO O PLATA según corresponda (importante)</li>
+                          <li>Exactamente este separador {'->'} | (importante)</li>
+                          <li>Años que correspondan, seguido de un ENTER (importante)</li>
+                          <li>Separar cada premio por un ENTER (importante)</li>
+                        </ol>
+                      </p>
+                    </PopoverBody>
+                  </UncontrolledPopover>
                 </Label>
                 <Col sm={10}>
                   <Input
@@ -207,7 +244,20 @@ const WineForm = ({ dispatch, done, item, waiting }) => {
                 </Col>
               </FormGroup>
               <FormGroup>
-                <Label for='award_image'>Award Image</Label>
+                <Label for='award_image'>
+                  Award Image
+                  <UncontrolledPopover
+                    placement='right'
+                    target='award_image'
+                    trigger='focus'
+                    className='awards-popover'>
+                    <PopoverHeader className='text-danger'>Important!!</PopoverHeader>
+                    <PopoverBody>
+                      This plugin is very sensitive, if this field is <strong>EMPTY</strong>, the
+                      awards info won't be shown in the page.
+                    </PopoverBody>
+                  </UncontrolledPopover>
+                </Label>
                 <Input
                   onChange={handleChange}
                   id='award_image'
@@ -270,6 +320,30 @@ const WineForm = ({ dispatch, done, item, waiting }) => {
               <FormGroup row>
                 <Label for='awards_en' sm={2}>
                   Awards
+                  <UncontrolledPopover
+                    placement='top'
+                    target='awards_en'
+                    trigger='focus'
+                    className='awards-popover'>
+                    <PopoverHeader className='text-danger'>Important!!</PopoverHeader>
+                    <PopoverBody>
+                      This plugin is very sensitive, to show correctly the information you must add
+                      it following this example information correctly by following this example:
+                      <p>
+                        <img
+                          src={instructions}
+                          alt='instructions'
+                          style={{ width: '-webkit-fill-available' }}
+                        />
+                        <ol className='ms-0'>
+                          <li>Award: SILVER, GOLD, GOLD OR SILVER as applicable (important)</li>
+                          <li>Exactly this separator {'->'} | (important)</li>
+                          <li>Years that apply, followed by an ENTER (important)</li>
+                          <li>Separate each award by an ENTER (important)</li>
+                        </ol>
+                      </p>
+                    </PopoverBody>
+                  </UncontrolledPopover>
                 </Label>
                 <Col sm={10}>
                   <Input
@@ -368,6 +442,13 @@ const WineForm = ({ dispatch, done, item, waiting }) => {
               </FormGroup>
             </Col>
           </Row>
+
+          <h6 className='text-info'>
+            This plugin automatically removes the domain from all the url fields once you save it,
+            in order to properly show the image if export/import its database between both sites
+            ("vinicolalanuestra.com" and "lanuestrallc.com"). So, don't worry, just copy and paste
+            the url as normal.
+          </h6>
 
           <div className='d-flex gap-4 float-end'>
             <Button color='danger' type='button' disabled={!item || waiting} onClick={deleteWine}>

@@ -136,9 +136,9 @@
   align-items: flex-end;
 }
 
-/* .award-row {
-  border: 1px solid red;
-} */
+.awards-popover .popover {
+  display: table;
+}
 
 .award-row .award-col {
   height: 9em;
