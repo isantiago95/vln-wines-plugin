@@ -3,8 +3,8 @@
 /* 
 * Plugin Name: VLN Wines Directory
 * Author: Israel Santiago
-* Author URI: https://github.com/isantiago95
-* Version: 0.0.1
+* Author URI: https://github.com/isantiago95/vln-wines-plugin
+* Version: 1.0.0
 * Description: A plugin to create an easy CRUD for all wines
 * Text-Domain: vln-wines-directory
 */
