@@ -1,13 +1,13 @@
-import React from 'react';
-import { Row, Col } from 'reactstrap';
-import { getWines, isEmptyArray, getLanguage } from '../../utils/helpers';
-import WineRow from '../../components/WineRow.jsx';
-import Awards from '../../components/Awards.jsx';
-import DataSheetModal from '../../components/DataSheetModal.jsx';
-import Loading from '../../components/Loading.jsx';
+import React from "react";
+import { Row, Col } from "reactstrap";
+import { getWines, isEmptyArray, getLanguage } from "../../utils/helpers";
+import WineRow from "../../components/WineRow.jsx";
+import Awards from "../../components/Awards.jsx";
+import DataSheetModal from "../../components/DataSheetModal.jsx";
+import Loading from "../../components/Loading.jsx";
 
-import separador from '../../assets/images/separador-white.png';
-import awardMedals from '../../assets/images/awards-medals.png';
+import separador from "../../assets/images/separador-white.png";
+import awardMedals from "../../assets/images/awards-medals.png";
 
 const Public = () => {
   const [wines, setWines] = React.useState([]);
@@ -17,7 +17,7 @@ const Public = () => {
   const [language, setLanguage] = React.useState(getLanguage());
 
   const params = new URLSearchParams(document.location.search);
-  const wineId = params.get('wine');
+  const wineId = params.get("wine");
 
   React.useEffect(() => {
     setLanguage(getLanguage());
@@ -28,8 +28,10 @@ const Public = () => {
     if (!isEmptyArray(wines) && !loading && wineId) scroll(wineId);
   }, [wineId, wines, loading]);
 
-  const scroll = wineId =>
-    document.getElementById(wineId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const scroll = (wineId) =>
+    document
+      .getElementById(wineId)
+      .scrollIntoView({ behavior: "smooth", block: "center" });
 
   const retrieveData = async () => {
     setLoading(true);
@@ -38,7 +40,7 @@ const Public = () => {
     setLoading(false);
   };
 
-  const openModal = datasheet => {
+  const openModal = (datasheet) => {
     setDataSheet(datasheet);
     setIsOpen(true);
   };
@@ -57,26 +59,33 @@ const Public = () => {
       return (
         <React.Fragment>
           {wines
-            .filter(p => p.status === 'published')
+            .filter((p) => p.status !== "draft")
             .map((w, idx) => (
-              <WineRow wine={w} language={language} idx={idx} openModal={openModal} />
+              <WineRow
+                wine={w}
+                language={language}
+                idx={idx}
+                openModal={openModal}
+              />
             ))}
 
-          <Row className='vln-separator'>
+          <Row className="vln-separator">
             <Row style={{ backgroundImage: `url(${separador})` }}>
-              <Col sm='12' md='3' lg='3' xl='3' className='text-center'>
-                <img src={awardMedals} alt='awards' />
+              <Col sm="12" md="3" lg="3" xl="3" className="text-center">
+                <img src={awardMedals} alt="awards" />
               </Col>
-              <Col sm='12' md='9' lg='9' xl='9' className='vln-our-awards'>
-                <h2 className='text-uppercase'>{language ? 'Nuestros premios' : 'Our Awards'}</h2>
+              <Col sm="12" md="9" lg="9" xl="9" className="vln-our-awards">
+                <h2 className="text-uppercase">
+                  {language ? "Nuestros premios" : "Our Awards"}
+                </h2>
               </Col>
             </Row>
           </Row>
 
-          <div className='d-flex flex-column flex-wrap gap-5'>
+          <div className="d-flex flex-column flex-wrap gap-5">
             {wines
-              .filter(w => w.status === 'published' && w.award_image)
-              .map(wine => (
+              .filter((w) => w.status !== "draft" && w.award_image)
+              .map((wine) => (
                 <Awards wine={wine} language={language} />
               ))}
           </div>
@@ -87,7 +96,13 @@ const Public = () => {
   return (
     <React.Fragment>
       {renderWines()}
-      {isOpen && <DataSheetModal isOpen={isOpen} close={closeModal} datasheet={dataSheet} />}
+      {isOpen && (
+        <DataSheetModal
+          isOpen={isOpen}
+          close={closeModal}
+          datasheet={dataSheet}
+        />
+      )}
     </React.Fragment>
   );
 };
