@@ -102,6 +102,12 @@
   width: 100px;
 }
 
+.sold-out{
+  text-align: center;
+  background-color: #a22c4d;
+  padding: 10px 20px;
+}
+
 .wine-row .buttons-group {
   width: fit-content;
   display: flex;
@@ -127,9 +133,9 @@
 .vln-separator {
   height: 6em;
   background-color: rgb(80, 80, 80);
-  filter: hue-rotate(90deg) br;
   margin-bottom: 6em;
 }
+
 .vln-separator .row {
   background-repeat: inherit;
   background-size: auto;
